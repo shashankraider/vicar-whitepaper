@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VICAR Whitepaper</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,900&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F7F2E8; --paper-2:#FBF8F0; --ink:#241F1A; --ink-soft:#5A5048; --rule:#D9CFBC;
+    --velocity:#E0533D;     /* V */
+    --impact:#C2722E;       /* I */
+    --complexity:#2F6F6B;   /* C */
+    --adoption:#6B4E9E;     /* A */
+    --rigor:#7C8A3F;        /* R */
+    --maxw:1080px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(1200px 700px at 80% -10%, rgba(124,138,63,.10), transparent 60%),
+      radial-gradient(900px 600px at -10% 20%, rgba(224,83,61,.08), transparent 55%),
+      var(--paper);
+    color:var(--ink);font-family:"Spectral",Georgia,serif;font-weight:400;line-height:1.65;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 32px;}
+
+  /* masthead */
+  header.masthead{padding:64px 0 24px;}
+  .eyebrow{display:inline-flex;align-items:center;gap:10px;font-family:"Spectral",serif;text-transform:uppercase;letter-spacing:.28em;font-size:11.5px;font-weight:600;color:var(--ink-soft);margin:0 0 22px;}
+  .eyebrow::before{content:"";width:34px;height:1px;background:var(--ink-soft);display:inline-block;}
+  h1.title{font-family:"Fraunces",serif;font-weight:900;font-size:clamp(48px,8vw,108px);line-height:.94;letter-spacing:-.02em;margin:0;}
+  h1.title em{font-style:italic;font-weight:400;color:var(--velocity);}
+  .dek{font-family:"Spectral",serif;font-size:clamp(18px,2.4vw,23px);color:var(--ink-soft);max-width:62ch;margin:26px 0 0;line-height:1.5;}
+  .dek b{color:var(--ink);font-weight:600;}
+
+  /* interactive VICAR key */
+  .vicar-key{margin:34px 0 4px;display:grid;grid-template-columns:repeat(5,1fr);border:1px solid var(--rule);border-radius:5px;overflow:hidden;background:var(--paper-2);}
+  .vicar-key a{text-decoration:none;color:inherit;padding:18px 14px 16px;text-align:center;border-right:1px solid var(--rule);display:block;position:relative;transition:background .25s ease, transform .25s ease;}
+  .vicar-key a:last-child{border-right:0;}
+  .vicar-key a:hover{background:#fff;transform:translateY(-2px);}
+  .vicar-key .ltr{font-family:"Fraunces",serif;font-weight:900;font-size:clamp(30px,4vw,46px);line-height:1;display:block;letter-spacing:-.02em;}
+  .vicar-key .wd{display:block;margin-top:8px;font-size:12px;letter-spacing:.04em;color:var(--ink-soft);font-family:"Spectral",serif;}
+  .vicar-key a::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:currentColor;transform:scaleX(0);transition:transform .25s ease;transform-origin:center;}
+  .vicar-key a:hover::after{transform:scaleX(1);}
+  .vk-v{color:var(--velocity);} .vk-i{color:var(--impact);} .vk-c{color:var(--complexity);} .vk-a{color:var(--adoption);} .vk-r{color:var(--rigor);}
+  .vicar-key .wd{color:var(--ink-soft);}
+  .key-hint{font-size:12px;font-style:italic;color:var(--ink-soft);margin:12px 0 0;text-align:center;}
+
+  /* hero flower */
+  .hero{margin:34px 0 8px;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);display:grid;grid-template-columns:1.05fr .95fr;gap:10px;align-items:center;}
+  .hero .art{padding:30px 20px 30px 0;}
+  .hero .art svg{width:100%;height:auto;display:block;overflow:visible;}
+  .hero .note{padding:38px 0 38px 40px;border-left:1px solid var(--rule);}
+  .hero .note h2{font-family:"Fraunces",serif;font-weight:600;font-size:25px;line-height:1.2;margin:0 0 14px;letter-spacing:-.01em;}
+  .hero .note p{margin:0 0 14px;font-size:16.5px;color:var(--ink-soft);}
+  .hero .note p strong{color:var(--ink);font-weight:600;}
+
+  .leaf-shape{opacity:0;animation:bloom .7s ease forwards;}
+  .leaf-1{animation-delay:.15s;} .leaf-2{animation-delay:.30s;} .leaf-3{animation-delay:.45s;} .leaf-4{animation-delay:.60s;} .leaf-5{animation-delay:.75s;}
+  @keyframes bloom{from{opacity:0;}to{opacity:1;}}
+  .leaf-g{transition:opacity .3s ease;}
+  .flower.is-dim .leaf-g{opacity:.18;}
+  .flower .leaf-g.leaf-focus{opacity:1;}
+  .leaf-label{font-family:"Spectral",serif;font-size:15px;font-weight:600;opacity:0;animation:fadein .6s ease forwards;animation-delay:1s;}
+  .leaf-sub{font-family:"Spectral",serif;font-size:11px;font-style:italic;fill:var(--ink-soft);opacity:0;animation:fadein .6s ease forwards;animation-delay:1.1s;}
+  @keyframes fadein{to{opacity:1;}}
+  .core-ring{opacity:0;animation:fadein .8s ease forwards;animation-delay:.05s;}
+
+  /* abstract */
+  .abstract{border:1px solid var(--rule);border-left:4px solid var(--velocity);background:var(--paper-2);border-radius:4px;padding:32px 34px;margin:50px 0 0;}
+  .abstract .lbl{font-family:"Spectral",serif;text-transform:uppercase;letter-spacing:.22em;font-size:11px;font-weight:600;color:var(--ink-soft);margin:0 0 14px;}
+  .abstract p{margin:0 0 14px;font-size:17px;color:var(--ink);max-width:74ch;}
+  .abstract p:last-child{margin-bottom:0;}
+  .abstract b{font-weight:600;}
+
+  /* sections */
+  section{padding:60px 0;}
+  .sec-num{font-family:"Fraunces",serif;font-style:italic;font-weight:400;font-size:15px;color:var(--ink-soft);display:block;margin-bottom:10px;letter-spacing:.04em;}
+  h2.sec{font-family:"Fraunces",serif;font-weight:600;font-size:clamp(28px,4.2vw,42px);line-height:1.08;letter-spacing:-.015em;margin:0 0 22px;max-width:26ch;}
+  .lede{font-size:clamp(17px,2vw,20px);color:var(--ink);margin:0 0 18px;}
+  p.body{font-size:16.5px;color:var(--ink-soft);margin:0 0 16px;}
+  p.body strong{color:var(--ink);font-weight:600;}
+  .divider{border:0;border-top:1px solid var(--rule);margin:0;}
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:18px 48px;}
+  .two-col .body{max-width:48ch;}
+
+  /* failure list */
+  .fails{display:grid;grid-template-columns:1fr 1fr;gap:30px 48px;margin-top:18px;}
+  .fail{padding-top:18px;border-top:2px solid var(--ink);}
+  .fail h4{font-family:"Fraunces",serif;font-weight:600;font-size:20px;margin:0 0 8px;line-height:1.15;letter-spacing:-.01em;}
+  .fail p{margin:0;font-size:15.5px;color:var(--ink-soft);}
+  .fail p em{color:var(--ink);font-style:italic;}
+  .fail.span{grid-column:1/-1;border-top-color:var(--velocity);}
+  .fail.span h4{color:var(--velocity);}
+
+  /* contrast */
+  .contrast{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--rule);border-radius:4px;overflow:hidden;background:var(--paper-2);}
+  .contrast > div{padding:30px 30px 26px;}
+  .contrast > div:first-child{border-right:1px solid var(--rule);}
+  .contrast h4{font-family:"Spectral",serif;text-transform:uppercase;letter-spacing:.16em;font-size:11.5px;color:var(--ink-soft);margin:0 0 18px;font-weight:600;}
+  .contrast svg{width:160px;height:160px;display:block;margin:0 auto 16px;overflow:visible;}
+  .contrast p{font-size:14.5px;color:var(--ink-soft);margin:0;text-align:center;max-width:34ch;margin-inline:auto;}
+  .contrast p b{color:var(--ink);}
+
+  /* petal cards */
+  .petal{display:grid;grid-template-columns:96px 1fr;gap:0 34px;align-items:start;padding:38px 0;border-top:1px solid var(--rule);scroll-margin-top:24px;transition:background .4s ease;border-radius:4px;}
+  .petal:last-of-type{border-bottom:1px solid var(--rule);}
+  .petal.flash{background:#fff;box-shadow:0 0 0 1px var(--rule);}
+  .petal .mark{position:relative;}
+  .petal .mark svg{width:84px;height:84px;overflow:visible;}
+  .petal .pnum{font-family:"Fraunces",serif;font-style:italic;font-size:13px;color:var(--ink-soft);margin-top:14px;display:block;}
+  .petal .pname{font-family:"Fraunces",serif;font-weight:600;font-size:30px;letter-spacing:-.01em;margin:0 0 2px;line-height:1.05;}
+  .petal .pname .badge{font-family:"Fraunces",serif;font-weight:900;font-size:18px;vertical-align:.06em;margin-right:8px;opacity:.5;}
+  .petal .reads{font-style:italic;color:var(--ink-soft);font-size:16px;margin:0 0 20px;}
+  .petal .blk{margin:0 0 16px;}
+  .petal .blk h5{font-family:"Spectral",serif;text-transform:uppercase;letter-spacing:.16em;font-size:11px;font-weight:600;color:var(--ink-soft);margin:0 0 6px;display:flex;align-items:center;gap:9px;}
+  .petal .blk h5::before{content:"";width:18px;height:1px;background:currentColor;display:inline-block;}
+  .petal .blk p{margin:0;font-size:16px;color:var(--ink);}
+  .petal[data-c="velocity"]{--c:var(--velocity);}
+  .petal[data-c="impact"]{--c:var(--impact);}
+  .petal[data-c="complexity"]{--c:var(--complexity);}
+  .petal[data-c="adoption"]{--c:var(--adoption);}
+  .petal[data-c="rigor"]{--c:var(--rigor);}
+  .petal .pname{color:var(--c);}
+  .petal .ai h5{color:var(--c);}
+
+  /* cluster matrix */
+  .matrix-wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:center;}
+  .matrix{position:relative;padding:26px 0 0 28px;}
+  .matrix .grid{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;border:1px solid var(--ink);aspect-ratio:1/.82;}
+  .matrix .cell{padding:20px;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);display:flex;flex-direction:column;justify-content:center;}
+  .matrix .cell:nth-child(2),.matrix .cell:nth-child(4){border-right:0;}
+  .matrix .cell:nth-child(3),.matrix .cell:nth-child(4){border-bottom:0;}
+  .matrix .cell .nm{font-family:"Fraunces",serif;font-weight:600;font-size:20px;line-height:1.05;margin:0 0 6px;}
+  .matrix .cell .ds{font-size:13px;color:var(--ink-soft);margin:0;line-height:1.4;}
+  .cell.power .nm{color:var(--adoption);} .cell.exploring .nm{color:var(--impact);}
+  .cell.traditional .nm{color:var(--complexity);} .cell.attention .nm{color:var(--velocity);}
+  .axis-y{position:absolute;left:-2px;top:26px;bottom:0;width:24px;display:flex;align-items:center;justify-content:center;}
+  .axis-y span{writing-mode:vertical-rl;transform:rotate(180deg);text-transform:uppercase;letter-spacing:.18em;font-size:10.5px;color:var(--ink-soft);font-weight:600;}
+  .axis-x{text-align:center;text-transform:uppercase;letter-spacing:.18em;font-size:10.5px;color:var(--ink-soft);font-weight:600;margin:10px 0 0 28px;}
+  .axis-tick{display:flex;justify-content:space-between;font-size:10px;font-style:italic;color:var(--ink-soft);margin:6px 0 0 28px;font-family:"Spectral",serif;}
+
+  /* stages */
+  .stages{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:8px;}
+  .stage{border:1px solid var(--rule);border-radius:5px;background:var(--paper-2);padding:26px 24px;position:relative;}
+  .stage .st{font-family:"Fraunces",serif;font-style:italic;font-size:13px;color:var(--ink-soft);margin:0 0 10px;}
+  .stage h4{font-family:"Fraunces",serif;font-weight:600;font-size:19px;margin:0 0 10px;line-height:1.15;}
+  .stage p{font-size:14.5px;color:var(--ink-soft);margin:0;}
+  .stage .pills{margin-top:14px;display:flex;gap:6px;flex-wrap:wrap;}
+  .stage .pill{font-family:"Fraunces",serif;font-weight:900;font-size:13px;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;color:#fff;}
+  .p-v{background:var(--velocity);} .p-i{background:var(--impact);} .p-c{background:var(--complexity);} .p-a{background:var(--adoption);} .p-r{background:var(--rigor);}
+  .throughout{margin-top:20px;border-left:3px solid var(--ink);padding:6px 0 6px 20px;}
+  .throughout p{margin:0;font-size:16px;color:var(--ink);max-width:72ch;}
+
+  /* guardrails (principles) */
+  .rails{background:var(--ink);color:var(--paper);border-radius:6px;padding:48px 44px;}
+  .rails h2{font-family:"Fraunces",serif;font-weight:600;font-size:30px;margin:0 0 8px;color:var(--paper);}
+  .rails .sub{color:#C9BFAE;font-style:italic;margin:0 0 30px;font-size:16px;}
+  .rails ol{list-style:none;counter-reset:r;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:24px 44px;}
+  .rails li{counter-increment:r;padding-left:42px;position:relative;}
+  .rails li::before{content:counter(r,decimal-leading-zero);position:absolute;left:0;top:2px;font-family:"Fraunces",serif;font-style:italic;font-size:15px;color:var(--velocity);}
+  .rails li b{display:block;font-family:"Spectral",serif;font-weight:600;font-size:16.5px;color:var(--paper);margin-bottom:3px;}
+  .rails li span{font-size:14.5px;color:#C9BFAE;line-height:1.5;}
+
+  /* close / footer */
+  .pull{font-family:"Fraunces",serif;font-weight:400;font-style:italic;font-size:clamp(24px,3.4vw,34px);line-height:1.28;letter-spacing:-.01em;max-width:25ch;margin:0 auto;text-align:center;color:var(--ink);}
+  .pull b{font-style:normal;font-weight:600;color:var(--velocity);}
+  footer{border-top:1px solid var(--rule);padding:36px 0 64px;color:var(--ink-soft);font-size:13px;}
+  footer .row{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+
+  .cmp{width:100%;border-collapse:collapse;margin:8px 0 4px;font-size:15px;}
+  .cmp th{background:var(--ink);color:var(--paper);text-align:left;font-family:"Spectral",serif;text-transform:uppercase;letter-spacing:.12em;font-size:11px;font-weight:600;padding:12px 14px;}
+  .cmp td{border:1px solid var(--rule);padding:13px 14px;vertical-align:top;color:var(--ink-soft);}
+  .cmp td:first-child{white-space:nowrap;color:var(--ink);}
+  .cmp .bnd{font-family:"Fraunces",serif;font-weight:900;margin-right:7px;}
+  .cmp tr:nth-child(even) td{background:var(--paper-2);}
+  .fwk{font-size:16px;color:var(--ink-soft);margin:0 0 16px;}
+  .fwk strong{font-weight:600;}
+
+  .formula{display:flex;align-items:center;justify-content:center;gap:18px;margin:30px 0 26px;max-width:62ch;font-family:"Spectral",serif;color:var(--ink);}
+  .formula .lhs{font-size:24px;font-style:italic;}
+  .formula .eq{font-size:24px;}
+  .formula .frac{display:inline-flex;flex-direction:column;text-align:center;}
+  .formula .frac .num{padding:0 16px 7px;font-size:21px;}
+  .formula .frac .den{padding:7px 16px 0;font-size:21px;border-top:2px solid var(--ink);}
+
+  .arch-h{font-family:"Fraunces",serif;font-weight:600;font-size:27px;letter-spacing:-.01em;color:var(--ink);margin:40px 0 6px;}
+  .arch-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:32px 40px;margin-top:24px;}
+  .arch-card{display:flex;gap:16px;align-items:flex-start;}
+  .arch-thumb{flex:0 0 108px;}
+  .arch-thumb .mini{width:108px;height:108px;display:block;}
+  .arch-name{font-family:"Fraunces",serif;font-weight:600;font-size:18px;margin:2px 0 7px;letter-spacing:-.01em;}
+  .arch-shape{font-size:15px;color:var(--ink);margin:0 0 8px;line-height:1.55;}
+  .arch-coach{font-size:14px;color:var(--ink-soft);font-style:italic;margin:0;line-height:1.55;}
+
+  .insight{border-left:4px solid var(--accent,var(--ink));margin:30px 0;padding:4px 0 4px 22px;}
+  .insight .ilabel{display:block;font-family:"Spectral",serif;text-transform:uppercase;letter-spacing:.16em;font-size:11px;font-weight:600;color:var(--accent,var(--ink));margin-bottom:9px;}
+  .insight p{font-family:"Fraunces",serif;font-size:21px;line-height:1.46;color:var(--ink);font-style:italic;margin:0;max-width:60ch;}
+
+  .stage-tag{font-family:"Fraunces",serif;font-style:italic;font-weight:600;font-size:15px;margin:-2px 0 10px;line-height:1.3;}
+
+  .howto{border:1px solid var(--rule);border-left:4px solid var(--complexity);background:var(--paper-2);padding:22px 26px;margin:36px 0 4px;}
+  .howto .hlabel{display:block;font-family:"Spectral",serif;text-transform:uppercase;letter-spacing:.15em;font-size:11px;font-weight:600;color:var(--complexity);margin-bottom:14px;}
+  .howto ol{margin:0;padding-left:24px;}
+  .howto li{margin:0 0 13px;font-size:15px;line-height:1.55;color:var(--ink-soft);}
+  .howto li strong{color:var(--ink);}
+  .howto .guard{margin:16px 0 0;font-style:italic;font-size:14px;color:var(--ink-soft);}
+
+  @media(max-width:820px){
+    .hero,.two-col,.matrix-wrap,.contrast,.fails,.stages{grid-template-columns:1fr;}
+    .hero .note{border-left:0;border-top:1px solid var(--rule);padding:30px 0 6px;}
+    .contrast > div:first-child{border-right:0;border-bottom:1px solid var(--rule);}
+    .rails ol{grid-template-columns:1fr;}
+    .petal{grid-template-columns:64px 1fr;gap:0 22px;}
+    .petal .mark svg{width:58px;height:58px;}
+    .vicar-key .wd{display:none;}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <!-- ================= MASTHEAD ================= -->
+  <header class="masthead">
+    <p class="eyebrow">VICAR<sup style="font-size:.55em;top:-.7em;position:relative;letter-spacing:0;">&trade;</sup> Whitepaper &middot; v1.0 &middot; June 2026</p>
+    <h1 class="title">Five petals,<br>five different <em>leaves.</em></h1>
+    <p class="dek">A framework for measuring developer productivity: to <b>coach, not rank</b>. Productivity is not a number; it is a multi-dimensional <em>shape</em>, read as a trend against a team's own baseline, and used to start a conversation.</p>
+
+    <nav class="vicar-key" aria-label="The five VICAR petals">
+      <a href="#petal-velocity"   data-leaf="leaf-velocity"><span class="ltr vk-v">V</span><span class="wd">Velocity</span></a>
+      <a href="#petal-impact"     data-leaf="leaf-impact"><span class="ltr vk-i">I</span><span class="wd">Impact</span></a>
+      <a href="#petal-complexity" data-leaf="leaf-complexity"><span class="ltr vk-c">C</span><span class="wd">Complexity</span></a>
+      <a href="#petal-adoption"   data-leaf="leaf-adoption"><span class="ltr vk-a">A</span><span class="wd">AI&nbsp;Adoption</span></a>
+      <a href="#petal-rigor"      data-leaf="leaf-rigor"><span class="ltr vk-r">R</span><span class="wd">Rigor</span></a>
+    </nav>
+    <p class="key-hint">Hover a letter to find its leaf &middot; tap to jump to the dimension.</p>
+  </header>
+
+  <!-- ================= HERO FLOWER ================= -->
+  <div class="hero">
+    <div class="art">
+      <svg class="flower" id="flower" viewBox="0 0 600 600" role="img" aria-label="A flower of five distinct leaf-petals: Velocity, Impact, Complexity, AI Adoption and Rigor, each a different shape, length and colour.">
+
+        <!-- VELOCITY (top, filled) -->
+        <g class="leaf-g" data-leaf="leaf-velocity" transform="rotate(0 300 300)">
+          <path class="leaf-shape leaf-1" d="M300,300 C339,225 335,150 300,85 C265,150 261,225 300,300 Z" fill="var(--velocity)" fill-opacity="0.86"/>
+          <line class="leaf-shape leaf-1" x1="300" y1="296" x2="300" y2="95" stroke="#FBF8F0" stroke-opacity=".55" stroke-width="1.4"/>
+        </g>
+        <text class="leaf-label" x="300" y="60" text-anchor="middle" fill="var(--velocity)">Velocity</text>
+        <text class="leaf-sub" x="300" y="77" text-anchor="middle">productive flow</text>
+
+        <!-- COMPLEXITY (upper-right) -->
+        <g class="leaf-g" data-leaf="leaf-complexity" transform="rotate(72 300 300)">
+          <path class="leaf-shape leaf-2" d="M300,300 C332,248 329,196 300,150 C271,196 268,248 300,300 Z" fill="var(--complexity)" fill-opacity="0.86"/>
+          <line class="leaf-shape leaf-2" x1="300" y1="296" x2="300" y2="158" stroke="#FBF8F0" stroke-opacity=".5" stroke-width="1.4"/>
+        </g>
+        <text class="leaf-label" x="476" y="250" text-anchor="start" fill="var(--complexity)">Complexity</text>
+        <text class="leaf-sub" x="476" y="267" text-anchor="start">difficulty &amp; blast radius</text>
+
+        <!-- RIGOR (lower-right) -->
+        <g class="leaf-g" data-leaf="leaf-rigor" transform="rotate(144 300 300)">
+          <path class="leaf-shape leaf-3" d="M300,300 C330,242 327,182 300,130 C273,182 270,242 300,300 Z" fill="var(--rigor)" fill-opacity="0.86"/>
+          <line class="leaf-shape leaf-3" x1="300" y1="296" x2="300" y2="138" stroke="#FBF8F0" stroke-opacity=".5" stroke-width="1.4"/>
+        </g>
+        <text class="leaf-label" x="430" y="470" text-anchor="start" fill="var(--rigor)">Rigor</text>
+        <text class="leaf-sub" x="430" y="487" text-anchor="start">quality &amp; hygiene</text>
+
+        <!-- IMPACT (lower-left, suppressed outline) -->
+        <g class="leaf-g" data-leaf="leaf-impact" transform="rotate(216 300 300)">
+          <path class="leaf-shape leaf-4" d="M300,300 C328,258 325,216 300,180 C275,216 272,258 300,300 Z" fill="var(--impact)" fill-opacity="0.86"/>
+          <line class="leaf-shape leaf-4" x1="300" y1="296" x2="300" y2="188" stroke="#FBF8F0" stroke-opacity=".5" stroke-width="1.4"/>
+        </g>
+        <text class="leaf-label" x="172" y="470" text-anchor="end" fill="var(--impact)">Impact</text>
+        <text class="leaf-sub" x="172" y="487" text-anchor="end">value, not churn</text>
+
+        <!-- AI ADOPTION (upper-left, suppressed outline) -->
+        <g class="leaf-g" data-leaf="leaf-adoption" transform="rotate(288 300 300)">
+          <path class="leaf-shape leaf-5" d="M300,300 C329,255 326,210 300,170 C274,210 271,255 300,300 Z" fill="var(--adoption)" fill-opacity="0.86"/>
+          <line class="leaf-shape leaf-5" x1="300" y1="296" x2="300" y2="178" stroke="#FBF8F0" stroke-opacity=".5" stroke-width="1.4"/>
+        </g>
+        <text class="leaf-label" x="124" y="250" text-anchor="end" fill="var(--adoption)">AI Adoption</text>
+        <text class="leaf-sub" x="124" y="267" text-anchor="end">leverage, not usage</text>
+
+        <g class="core-ring">
+          <circle cx="300" cy="300" r="26" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.4"/>
+          <text x="300" y="297" text-anchor="middle" font-family="Spectral, serif" font-size="9.5" letter-spacing="1.5" fill="var(--ink)">THE</text>
+          <text x="300" y="309" text-anchor="middle" font-family="Spectral, serif" font-size="9.5" letter-spacing="1.5" fill="var(--ink)">SHAPE</text>
+        </g>
+      </svg>
+    </div>
+    <div class="note">
+      <h2>Different leaves on purpose.</h2>
+      <p>The "single productivity score" everyone asks for is a blur of distinct things forced into false unity. <strong>VICAR draws each dimension as its own leaf</strong> (a different colour, a different silhouette, a different length), so a leader stops staring at a meaningless average and starts seeing the structure.</p>
+    <blockquote class="insight" style="--accent:var(--complexity)">
+      <span class="ilabel">VICAR Insight</span>
+      <p>A score ranks people; a shape coaches them. The moment a number can rank two engineers, both of them stop improving the work and start improving the number.</p>
+    </blockquote>
+      <p>That difference is the point. A short Velocity leaf beside a long Complexity one is the quiet architect, not a slacker. Read the silhouette, and you can coach the person in front of you.</p>
+      <p>Each leaf carries its own <strong>colour</strong> as well as its own length, so the five dimensions never blur together. Read the silhouette and the palette at once, and the structure a single average would hide is right there on the page. Where a band genuinely lacks trustworthy data, the framework says "not enough signal" rather than inventing one, because a fabricated band is worse than a missing one.</p>
+    </div>
+  </div>
+
+  <!-- ================= ABSTRACT ================= -->
+  <div class="abstract">
+    <p class="lbl">Abstract</p>
+    <p>Developer productivity is not a number. Every attempt to compress it into a single score (a velocity figure, a commit count, an "AI usage" percentage) fails the same way: it measures motion instead of value, and the moment it becomes a target, it stops measuring anything true.</p>
+    <p>VICAR refuses the single number. Productivity is a multi-dimensional <b>shape</b>, read as a trend against a team's own baseline and used to start a coaching conversation. The five dimensions that carry the signal are <b>Velocity</b> (productive flow), <b>Impact</b> (whether the work mattered), <b>Complexity</b> (the difficulty and blast radius of what was built), <b>AI&nbsp;adoption</b> (read against leverage, not usage), and <b>Rigor</b> (engineering quality and hygiene). AI&nbsp;adoption is a <b>core driver</b>, not an afterthought; in an AI-era org, higher adoption tends to lift the other bands. The shape is read as a trend, used as the opening line of a conversation, and never as an input to evaluation.</p>
+  </div>
+
+  <!-- ================= 1. THE PROBLEM ================= -->
+  <section>
+    <span class="sec-num">i. why measuring productivity is broken</span>
+    <h2 class="sec">The default ways of answering "are the teams productive?" don't just fail; they corrode.</h2>
+    <p class="lede" style="margin-bottom:6px;">Five well-documented failures explain why any single number you can rank people on will be gamed by the smart people being ranked.</p>
+    <div class="fails">
+      <div class="fail">
+        <h4>Goodhart's Law</h4>
+        <p>When a measure becomes a target, it stops being a good measure. Tell people their commit count is what matters and you get more commits, each one smaller and emptier. Picking a "better" metric doesn't save you: <em>any</em> number breaks the same way once people know they're judged on it.</p>
+      </div>
+      <div class="fail">
+        <h4>Output is not value</h4>
+        <p>Lines, PRs and "velocity" measure how much motion there was, not how much progress. A 2,000-line pull request can be a liability the team pays down for a year; the quarter's most valuable change might be a four-line bug fix. Often, more output means <em>less</em> value, not more.</p>
+      </div>
+      <div class="fail">
+        <h4>Activity is not productivity</h4>
+        <p>Busy is not the same as effective. Commits, tickets closed and hours logged are tempting to track because they're easy to count and <em>look</em> objective, but looking busy is the easiest thing in the world to fake.</p>
+      </div>
+      <div class="fail">
+        <h4>The surveillance trap</h4>
+        <p>Good engineering runs on honesty: admitting "I'm stuck," and taking on hard work that won't show up on any chart. The moment people believe they're being scored as individuals, that honesty disappears: they play to the metric and hide the rest. And once trust is gone, you don't get it back.</p>
+      </div>
+      <div class="fail span">
+        <h4>AI adoption is not AI leverage</h4>
+        <p>Seats, prompts, tokens, "percent of developers using the assistant" measure <em>usage</em>, not value. An org can hit 100% adoption and see zero leverage, while a usage dashboard happily reports it as success. Adoption without leverage is just spend with a progress bar. The throughline across all five: single metrics and individual rankings don't merely fail to measure productivity; they degrade it.</p>
+      </div>
+    </div>
+
+    <h3 class="arch-h" style="margin-top:42px;">Legacy traps vs the VICAR stance</h3>
+    <p class="body" style="margin-bottom:8px;">The same impulse, measured two ways. The left column is what teams reach for because it's easy to count; the right is what VICAR reads instead.</p>
+    <table class="cmp">
+      <thead><tr><th>Dimension</th><th>The legacy trap (easy to game)</th><th>The VICAR stance (coaching signal)</th></tr></thead>
+      <tbody>
+        <tr><td><span class="bnd" style="color:var(--velocity)">V</span>Velocity</td><td>Tracking Jira story points closed per week.</td><td>Tracking cycle-time trends against a team's own baseline.</td></tr>
+        <tr><td><span class="bnd" style="color:var(--impact)">I</span>Impact</td><td>Counting tickets or features shipped.</td><td>Reading whether a change touched tier-1 services and ranked epics: value, not volume.</td></tr>
+        <tr><td><span class="bnd" style="color:var(--complexity)">C</span>Complexity</td><td>Counting lines of code or files changed.</td><td>Tracking cyclomatic-complexity trends and blast radius: difficulty, not size.</td></tr>
+        <tr><td><span class="bnd" style="color:var(--adoption)">A</span>AI&nbsp;adoption</td><td>Counting GitHub Copilot seat or licence utilisation.</td><td>Measuring output and complexity leverage against token spend.</td></tr>
+        <tr><td><span class="bnd" style="color:var(--rigor)">R</span>Rigor</td><td>Demanding a flat 80% test-coverage minimum.</td><td>Monitoring change-failure-rate dips relative to deployment spikes.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ================= 2. THE FIVE DIMENSIONS ================= -->
+  <section>
+    <span class="sec-num">ii. the five leaves</span>
+    <h2 class="sec">The five bands that carry the signal, and what each means now AI is in the loop.</h2>
+    <p class="lede" style="margin-bottom:8px;">Five dimensions, read on their own AI-era terms. They form the name: <strong>VICAR</strong>.</p>
+
+    <!-- V: VELOCITY -->
+    <div class="petal" id="petal-velocity" data-c="velocity">
+      <div class="mark">
+        <svg viewBox="0 0 84 84"><g transform="translate(42,80)"><path d="M0,0 C16,-30 15,-58 0,-78 C-15,-58 -16,-30 0,0 Z" fill="var(--velocity)" fill-opacity=".88"/><line x1="0" y1="-4" x2="0" y2="-72" stroke="#FBF8F0" stroke-opacity=".55" stroke-width="1.3"/></g></svg>
+        <span class="pnum">leaf 01</span>
+      </div>
+      <div>
+        <h3 class="pname"><span class="badge">V</span>Velocity</h3>
+        <p class="reads">Productive flow: throughput and cycle time, read as trend within cohort, not raw count.</p>
+        <div class="blk"><h5>What it reads</h5><p>Is work moving, and is it moving faster or slower than this team's own normal? It answers velocity without worshipping it. Story points stay out, because the moment you score the estimate you teach people to inflate it.</p></div>
+        <div class="ai blk"><h5>Significance in the world of AI</h5><p>AI inflates this band the easiest, which is exactly why it can never stand alone. A tall Velocity leaf is a <em>question</em>, not an answer: is this leverage, or churn the other four leaves will expose?</p></div>
+        <div class="blk"><h5>How it builds a high-performing team</h5><p>It gives a shared, honest pulse of delivery and a baseline to trend against, so "slower than your own baseline" becomes a coaching signal, never "slower than the person next to you."</p></div>
+        <blockquote class="insight" style="--accent:var(--velocity)">
+          <span class="ilabel">VICAR Insight</span>
+          <p>In the AI era, a sudden spike in Velocity is an orange flag, not a victory lap. If Velocity doubles while Rigor flatlines, your system isn't getting faster; it's just accumulating debt at machine speed.</p>
+        </blockquote>
+      </div>
+    </div>
+
+    <!-- I: IMPACT -->
+    <div class="petal" id="petal-impact" data-c="impact">
+      <div class="mark">
+        <svg viewBox="0 0 84 84"><g transform="translate(42,80)"><path d="M0,0 C16,-30 15,-58 0,-78 C-15,-58 -16,-30 0,0 Z" fill="var(--impact)" fill-opacity=".88"/><line x1="0" y1="-4" x2="0" y2="-72" stroke="#FBF8F0" stroke-opacity=".5" stroke-width="1.3"/></g></svg>
+        <span class="pnum">leaf 02</span>
+      </div>
+      <div>
+        <h3 class="pname"><span class="badge">I</span>Impact</h3>
+        <p class="reads">Was the work pointed at what matters: new value versus maintenance churn, criticality of the systems touched.</p>
+        <div class="blk"><h5>What it reads</h5><p>It rewards the quiet, decisive four-line fix over the noisy two-thousand-line churn, and it reads that from system-of-record markers, never opinion or self-tagging: whether a change touches a <strong>tier-1 service</strong> rather than a tier-3 one, whether it modifies <strong>core business-logic APIs</strong>, and whether it links to an <strong>enterprise epic category</strong> the org already ranked as important. Those markers are auditable down to the event and hard to game, because the service tiers and the epic taxonomy are owned upstream, not by the engineer being read.</p></div>
+        <div class="ai blk"><h5>Significance in the world of AI</h5><p>AI removes the friction of <em>doing</em> work, which makes <em>direction</em> the bottleneck. A team can now produce enormous, beautifully-tested output aimed at nothing that matters. Impact is the leaf that asks whether all that new velocity points at the right target.</p></div>
+        <div class="blk"><h5>How it builds a high-performing team</h5><p>It connects individual effort to shared goals and exposes misalignment early. It is the leaf that asks, of every busy week, whether the motion was aimed at something the business actually decided was important.</p></div>
+      </div>
+    </div>
+
+    <!-- C: COMPLEXITY -->
+    <div class="petal" id="petal-complexity" data-c="complexity">
+      <div class="mark">
+        <svg viewBox="0 0 84 84"><g transform="translate(42,80)"><path d="M0,0 C16,-30 15,-58 0,-78 C-15,-58 -16,-30 0,0 Z" fill="var(--complexity)" fill-opacity=".88"/><line x1="0" y1="-4" x2="0" y2="-72" stroke="#FBF8F0" stroke-opacity=".5" stroke-width="1.3"/></g></svg>
+        <span class="pnum">leaf 03</span>
+      </div>
+      <div>
+        <h3 class="pname"><span class="badge">C</span>Complexity</h3>
+        <p class="reads">The difficulty of the work: blast radius, design and research effort, the illegible thinking that produces few commits and one excellent decision.</p>
+        <div class="blk"><h5>What it reads</h5><p>How hard the work actually was, measured from <strong>static-analysis signals, not a file count</strong>: cyclomatic-complexity trends (whether the branching difficulty of the code someone touches is rising or falling over time), architectural blast radius (how many downstream systems a change reaches), and deep code-path refactoring, alongside the design and research that lives in documents rather than commits. It is why VICAR does not mistake quiet for idle.</p></div>
+        <div class="ai blk"><h5>Significance in the world of AI</h5><p>This is the leaf AI <em>can't</em> grow for you. Models accelerate the typing; they don't decide what to build, how it fits, or what breaks. As routine code gets cheaper, the scarce, defensible work shifts toward design, and Complexity is the only band that sees it.</p></div>
+        <div class="blk"><h5>How it builds a high-performing team</h5><p>Crossed with Velocity it catches the quiet architect doing hard, low-PR-count work every activity metric would punish, so the team learns to value and protect that work instead of penalising it.</p></div>
+      </div>
+    </div>
+
+    <!-- A: AI ADOPTION -->
+    <div class="petal" id="petal-adoption" data-c="adoption">
+      <div class="mark">
+        <svg viewBox="0 0 84 84"><g transform="translate(42,80)"><path d="M0,0 C16,-30 15,-58 0,-78 C-15,-58 -16,-30 0,0 Z" fill="var(--adoption)" fill-opacity=".88"/><line x1="0" y1="-4" x2="0" y2="-72" stroke="#FBF8F0" stroke-opacity=".5" stroke-width="1.3"/></g></svg>
+        <span class="pnum">leaf 04</span>
+      </div>
+      <div>
+        <h3 class="pname"><span class="badge">A</span>AI Adoption</h3>
+        <p class="reads">AI investment read against what it produced: the throughput and difficulty earned per token of spend, not usage counts.</p>
+        <div class="blk"><h5>What it reads</h5><p>Leverage, not usage. True ROI puts output over investment, not the other way around:</p>
+        <div class="formula" role="img" aria-label="AI Leverage equals open paren Velocity plus Complexity close paren divided by Token Spend">
+          <span class="lhs">AI&nbsp;Leverage</span><span class="eq">=</span>
+          <span class="frac"><span class="num">Velocity&nbsp;+&nbsp;Complexity</span><span class="den">Token&nbsp;Spend</span></span>
+        </div>
+        <p>The numerator is what the engineer produced: shipped throughput plus the harder Complexity work (research, spikes, triage, design) that throughput alone never captures; the denominator is what it cost. Getting more throughput and more complexity out of fewer tokens is superior leverage; burning tokens for little movement is not. Adoption is the cost; leverage is the return, and only the return belongs on a productivity instrument.</p></div>
+        <div class="ai blk"><h5>Significance in the world of AI</h5><p>The band the older thinking predates, promoted here to a first-class dimension rather than a footnote. It is framed as <strong>enablement, not a spend gotcha</strong>: find who gets leverage, who pays without payoff, and who hasn't started, so support can be targeted. Because output includes Complexity, the architect spending heavily on AI to do research and design reads as leverage, not as "not converting."</p></div>
+        <div class="blk"><h5>How it builds a high-performing team</h5><p>It turns AI rollout from a hope into a read: a coaching prompt for who to pair, who to unblock, and where the spend is paying off, never a score folded into a number.</p></div>
+        <blockquote class="insight" style="--accent:var(--adoption)">
+          <span class="ilabel">VICAR Insight</span>
+          <p>An organisation can reach 100% AI adoption and produce zero leverage. Usage is the receipt; leverage is the return. A dashboard that celebrates seats is measuring the bill, not the value.</p>
+        </blockquote>
+      </div>
+    </div>
+
+    <!-- R: RIGOR -->
+    <div class="petal" id="petal-rigor" data-c="rigor">
+      <div class="mark">
+        <svg viewBox="0 0 84 84"><g transform="translate(42,80)"><path d="M0,0 C16,-30 15,-58 0,-78 C-15,-58 -16,-30 0,0 Z" fill="var(--rigor)" fill-opacity=".88"/><line x1="0" y1="-4" x2="0" y2="-72" stroke="#FBF8F0" stroke-opacity=".5" stroke-width="1.3"/></g></svg>
+        <span class="pnum">leaf 05</span>
+      </div>
+      <div>
+        <h3 class="pname"><span class="badge">R</span>Rigor</h3>
+        <p class="reads">Engineering discipline as a leading signal: test-coverage trends, CI health, change-failure rate.</p>
+        <div class="blk"><h5>What it reads</h5><p>Quality and hygiene read early, not after the incident. It is the band that keeps Velocity honest; it ensures speed is not being bought by mortgaging stability, the trade-off a single score would have hidden.</p></div>
+        <div class="ai blk"><h5>Significance in the world of AI</h5><p>When code is generated faster than it's read, rigor is the guardrail against confidently-wrong output flooding the repo. The risk isn't laziness; it's <em>volume</em>. This leaf asks the question AI tempts everyone to skip: was the generated code actually verified?</p></div>
+        <div class="blk"><h5>How it builds a high-performing team</h5><p>It turns "we should test more" into specific, auditable evidence. Because it's gameable on its own, it stays diagnostic; it corroborates the other leaves rather than raising a flag alone.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ================= 3. SHAPE OVER SCORE ================= -->
+  <section>
+    <span class="sec-num">iii. shape over score</span>
+    <h2 class="sec">A uniform radar hides people. Differentiated leaves reveal them.</h2>
+    <p class="lede" style="margin-bottom:34px;">The same five readings can be drawn two ways. Only one lets a manager <em>see</em> the engineer.</p>
+    <div class="contrast">
+      <div>
+        <h4>The single-score view</h4>
+        <svg viewBox="0 0 200 200" aria-label="Uniform radar where every petal is the same grey wedge">
+          <g transform="translate(100,100)" stroke="#B9AE9A" fill="none" stroke-width="1">
+            <polygon points="0,-78 74,-24 46,63 -46,63 -74,-24"/>
+            <polygon points="0,-52 49,-16 31,42 -31,42 -49,-16" stroke="#CFC4B0"/>
+            <polygon points="0,-26 25,-8 15,21 -15,21 -25,-8" stroke="#CFC4B0"/>
+          </g>
+          <g transform="translate(100,100)" fill="#9C927F" fill-opacity=".45" stroke="#9C927F" stroke-width="1.2">
+            <polygon points="0,-58 44,-14 27,38 -27,38 -44,-14"/>
+          </g>
+        </svg>
+        <p><b>One grey blob.</b> Every dimension reads the same; the trade-offs that are the whole point are hidden; the engineer is indistinguishable from the next.</p>
+      </div>
+      <div>
+        <h4>The VICAR view</h4>
+        <svg viewBox="0 0 200 200" aria-label="Five distinct coloured leaves of different lengths">
+          <g transform="translate(100,100)">
+            <g transform="rotate(0)"><path d="M0,0 C13,-25 12,-50 0,-72 C-12,-50 -13,-25 0,0 Z" fill="var(--velocity)" fill-opacity=".85"/></g>
+            <g transform="rotate(72)"><path d="M0,0 C11,-18 10,-36 0,-50 C-10,-36 -11,-18 0,0 Z" fill="var(--complexity)" fill-opacity=".85"/></g>
+            <g transform="rotate(144)"><path d="M0,0 C11,-20 10,-40 0,-58 C-10,-40 -11,-20 0,0 Z" fill="var(--rigor)" fill-opacity=".85"/></g>
+            <g transform="rotate(216)"><path d="M0,0 C9,-14 8,-28 0,-40 C-8,-28 -9,-14 0,0 Z" fill="var(--impact)" fill-opacity=".85"/></g>
+            <g transform="rotate(288)"><path d="M0,0 C10,-15 9,-30 0,-43 C-9,-30 -10,-15 0,0 Z" fill="var(--adoption)" fill-opacity=".85"/></g>
+            <circle r="9" fill="var(--paper)" stroke="var(--ink)" stroke-width="1"/>
+          </g>
+        </svg>
+        <p><b>A legible signature.</b> Long Velocity, modest Complexity, each dimension its own colour: a person you can actually coach.</p>
+      </div>
+    </div>
+    <p class="body" style="margin-top:28px;">Because the leaves differ, you compare <strong>shapes, not totals</strong>, and only within a like work-type cohort. A cohort is a <strong>domain topology, not a job title</strong>: platform engineering, greenfield product-feature teams, and legacy-maintenance teams are three different cohorts, because the work itself has a different shape. A staff architect on a legacy migration and a new-grad on a greenfield service are not on the same axis. Read as a trend, "down thirty percent against their own trailing average" is a reason to ask a kind question; "scored 0.6" is a reason for someone to feel judged and for no one to learn anything.</p>
+
+  <h3 class="arch-h">Shapes you will learn to recognise</h3>
+  <p class="body" style="margin-bottom:4px;">Once you read shape instead of score, a handful of silhouettes start to repeat. None is a verdict; each is the opening line of a different conversation.</p>
+  <div class="arch-grid">
+    <div class="arch-card">
+      <div class="arch-thumb"><svg class="mini" xmlns="http://www.w3.org/2000/svg" viewBox="-16 -16 332 332"><g transform="rotate(0 150 150)"><path d="M150,150 C158.0,142.7 157.2,135.4 150,129.1 C142.8,135.4 142.0,142.7 150,150 Z" fill="#E0533D" fill-opacity="0.9"/></g><g transform="rotate(72 150 150)"><path d="M150,150 C170.9,109.4 168.8,68.8 150,34.0 C131.2,68.8 129.1,109.4 150,150 Z" fill="#2F6F6B" fill-opacity="0.9"/></g><g transform="rotate(144 150 150)"><path d="M150,150 C162.9,124.8 161.7,99.7 150,78.1 C138.3,99.7 137.1,124.8 150,150 Z" fill="#7C8A3F" fill-opacity="0.9"/></g><g transform="rotate(216 150 150)"><path d="M150,150 C169.2,112.6 167.3,75.3 150,43.3 C132.7,75.3 130.8,112.6 150,150 Z" fill="#C2722E" fill-opacity="0.9"/></g><g transform="rotate(288 150 150)"><path d="M150,150 C160.4,129.7 159.4,109.4 150,92.0 C140.6,109.4 139.6,129.7 150,150 Z" fill="#6B4E9E" fill-opacity="0.9"/></g><circle cx="150" cy="150" r="9" fill="#FFFFFF" stroke="#241F1A" stroke-width="1.4"/><text x="150.0" y="114.1" text-anchor="middle" dominant-baseline="central" font-family="Georgia, serif" font-size="21" font-weight="bold" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="3.4">V</text><text x="150.0" y="114.1" text-anchor="middle" dominant-baseline="central" font-family="Georgia, serif" font-size="21" font-weight="bold" fill="#E0533D">V</text><text x="274.6" y="109.5" text-anchor="middle" dominant-baseline="central" font-family="Georgia, serif" font-size="21" font-weight="bold" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="3.4">C</text><text x="274.6" y="109.5" text-anchor="middle" dominant-baseline="central" font-family="Georgia, serif" font-size="21" font-weight="bold" fill="#2F6F6B">C</text><text x="201.1" y="220.3" text-anchor="middle" dominant-baseline="central" font-family="Georgia, serif" font-size="21" font-weight="bold" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="3.4">R</text><text x="201.1" y="220.3" text-anchor="middle" dominant-baseline="central" font-family="Georgia, serif" font-size="21" font-weight="bold" fill="#7C8A3F">R</text><text x="78.5" y="248.5" text-anchor="middle" dominant-baseline="central" font-family="Georgia, serif" font-size="21" font-weight="bold" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="3.4">I</text><text x="78.5" y="248.5" text-anchor="middle" dominant-baseline="central" font-family="Georgia, serif" font-size="21" font-weight="bold" fill="#C2722E">I</text><text x="80.6" y="127.4" text-anchor="middle" dominant-baseline="central" font-family="Georgia, serif" font-size="21" font-weight="bold" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="3.4">A</text><text x="80.6" y="127.4" text-anchor="middle" dominant-baseline="central" font-family="Georgia, serif" font-size="21" font-weight="bold" fill="#6B4E9E">A</text></svg></div>
+      <div class="arch-body">
+        <h4 class="arch-name" style="color:var(--complexity);">The Ghost Architect</h4>
+        <p class="arch-shape">A sliver of Velocity, towering Complexity and Impact. The quiet senior who ships a four-line architectural fix that saves the quarter.</p>
+        <p class="arch-coach">A score-based system buries this person; their Velocity looks "low." The shape says protect and amplify them, and never let a velocity dashboard penalise the work that mattered most.</p>
+      </div>
+    </div>
+    <div class="arch-card">
+      <div class="arch-thumb"><svg class="mini" xmlns="http://www.w3.org/2000/svg" viewBox="-16 -16 332 332"><g transform="rotate(0 150 150)"><path d="M150,150 C170.9,109.4 168.8,68.8 150,34.0 C131.2,68.8 129.1,109.4 150,150 Z" fill="#E0533D" fill-opacity="0.9"/></g><g transform="rotate(72 150 150)"><path d="M150,150 C158.0,136.2 157.2,122.4 150,110.6 C142.8,122.4 142.0,136.2 150,150 Z" fill="#2F6F6B" fill-opacity="0.9"/></g><g transform="rotate(144 150 150)"><path d="M150,150 C158.0,143.5 157.2,137.0 150,131.4 C142.8,137.0 142.0,143.5 150,150 Z" fill="#7C8A3F" fill-opacity="0.9"/></g><g transform="rotate(216 150 150)"><path d="M150,150 C158.0,141.9 157.2,133.8 150,126.8 C142.8,133.8 142.0,141.9 150,150 Z" fill="#C2722E" fill-opacity="0.9"/></g><g transform="rotate(288 150 150)"><path d="M150,150 C170.9,109.4 168.8,68.8 150,34.0 C131.2,68.8 129.1,109.4 150,150 Z" fill="#6B4E9E" fill-opacity="0.9"/></g><circle cx="150" cy="150" r="9" fill="#FFFFFF" stroke="#241F1A" stroke-width="1.4"/><text x="150.0" y="19.0" text-anchor="middle" dominant-baseline="central" font-family="Georgia, serif" font-size="21" font-weight="bold" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="3.4">V</text><text x="150.0" y="19.0" text-anchor="middle" dominant-baseline="central" font-family="Georgia, serif" font-size="21" font-weight="bold" fill="#E0533D">V</text><text x="201.8" y="133.2" text-anchor="middle" dominant-baseline="central" font-family="Georgia, serif" font-size="21" font-weight="bold" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="3.4">C</text><text x="201.8" y="133.2" text-anchor="middle" dominant-baseline="central" font-family="Georgia, serif" font-size="21" font-weight="bold" fill="#2F6F6B">C</text><text x="170.0" y="177.5" text-anchor="middle" dominant-baseline="central" font-family="Georgia, serif" font-size="21" font-weight="bold" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="3.4">R</text><text x="170.0" y="177.5" text-anchor="middle" dominant-baseline="central" font-family="Georgia, serif" font-size="21" font-weight="bold" fill="#7C8A3F">R</text><text x="127.5" y="180.9" text-anchor="middle" dominant-baseline="central" font-family="Georgia, serif" font-size="21" font-weight="bold" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="3.4">I</text><text x="127.5" y="180.9" text-anchor="middle" dominant-baseline="central" font-family="Georgia, serif" font-size="21" font-weight="bold" fill="#C2722E">I</text><text x="25.4" y="109.5" text-anchor="middle" dominant-baseline="central" font-family="Georgia, serif" font-size="21" font-weight="bold" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="3.4">A</text><text x="25.4" y="109.5" text-anchor="middle" dominant-baseline="central" font-family="Georgia, serif" font-size="21" font-weight="bold" fill="#6B4E9E">A</text></svg></div>
+      <div class="arch-body">
+        <h4 class="arch-name" style="color:var(--velocity);">The AI Firehose</h4>
+        <p class="arch-shape">Huge Velocity and AI adoption, collapsed Rigor and Impact. The developer shipping LLM output at volume without reading it, generating churn and debt.</p>
+        <p class="arch-coach">On any single metric this looks like a top performer. The shrunken Rigor and Impact leaves are the tell: the conversation is about review and direction, not speed.</p>
+      </div>
+    </div>
+    <div class="arch-card">
+      <div class="arch-thumb"><svg class="mini" xmlns="http://www.w3.org/2000/svg" viewBox="-16 -16 332 332"><g transform="rotate(0 150 150)"><path d="M150,150 C158.0,136.2 157.2,122.4 150,110.6 C142.8,122.4 142.0,136.2 150,150 Z" fill="#E0533D" fill-opacity="0.9"/></g><g transform="rotate(72 150 150)"><path d="M150,150 C158.8,132.9 157.9,115.9 150,101.3 C142.1,115.9 141.2,132.9 150,150 Z" fill="#2F6F6B" fill-opacity="0.9"/></g><g transform="rotate(144 150 150)"><path d="M150,150 C170.0,111.0 168.0,72.0 150,38.6 C132.0,72.0 130.0,111.0 150,150 Z" fill="#7C8A3F" fill-opacity="0.9"/></g><g transform="rotate(216 150 150)"><path d="M150,150 C158.0,140.3 157.2,130.5 150,122.2 C142.8,130.5 142.0,140.3 150,150 Z" fill="#C2722E" fill-opacity="0.9"/></g><g transform="rotate(288 150 150)"><path d="M150,150 C158.0,137.8 157.2,125.6 150,115.2 C142.8,125.6 142.0,137.8 150,150 Z" fill="#6B4E9E" fill-opacity="0.9"/></g><circle cx="150" cy="150" r="9" fill="#FFFFFF" stroke="#241F1A" stroke-width="1.4"/><text x="150.0" y="95.6" text-anchor="middle" dominant-baseline="central" font-family="Georgia, serif" font-size="21" font-weight="bold" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="3.4">V</text><text x="150.0" y="95.6" text-anchor="middle" dominant-baseline="central" font-family="Georgia, serif" font-size="21" font-weight="bold" fill="#E0533D">V</text><text x="210.6" y="130.3" text-anchor="middle" dominant-baseline="central" font-family="Georgia, serif" font-size="21" font-weight="bold" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="3.4">C</text><text x="210.6" y="130.3" text-anchor="middle" dominant-baseline="central" font-family="Georgia, serif" font-size="21" font-weight="bold" fill="#2F6F6B">C</text><text x="224.3" y="252.2" text-anchor="middle" dominant-baseline="central" font-family="Georgia, serif" font-size="21" font-weight="bold" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="3.4">R</text><text x="224.3" y="252.2" text-anchor="middle" dominant-baseline="central" font-family="Georgia, serif" font-size="21" font-weight="bold" fill="#7C8A3F">R</text><text x="124.8" y="184.7" text-anchor="middle" dominant-baseline="central" font-family="Georgia, serif" font-size="21" font-weight="bold" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="3.4">I</text><text x="124.8" y="184.7" text-anchor="middle" dominant-baseline="central" font-family="Georgia, serif" font-size="21" font-weight="bold" fill="#C2722E">I</text><text x="102.6" y="134.6" text-anchor="middle" dominant-baseline="central" font-family="Georgia, serif" font-size="21" font-weight="bold" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="3.4">A</text><text x="102.6" y="134.6" text-anchor="middle" dominant-baseline="central" font-family="Georgia, serif" font-size="21" font-weight="bold" fill="#6B4E9E">A</text></svg></div>
+      <div class="arch-body">
+        <h4 class="arch-name" style="color:var(--rigor);">The Maintenance Anchor</h4>
+        <p class="arch-shape">High Rigor, flat Velocity, low Impact. The engineer polishing a legacy system the business has quietly stopped betting on.</p>
+        <p class="arch-coach">This shape is rarely about the person; it is about the assignment. Read in cohort context, it is a prompt to question whether the work still matters, or to move them onto something with headroom.</p>
+      </div>
+    </div>
+    <div class="arch-card">
+      <div class="arch-thumb"><svg class="mini" xmlns="http://www.w3.org/2000/svg" viewBox="-16 -16 332 332"><g transform="rotate(0 150 150)"><path d="M150,150 C168.0,115.1 166.2,80.2 150,50.2 C133.8,80.2 132.0,115.1 150,150 Z" fill="#E0533D" fill-opacity="0.9"/></g><g transform="rotate(72 150 150)"><path d="M150,150 C167.1,116.7 165.4,83.4 150,54.9 C134.6,83.4 132.9,116.7 150,150 Z" fill="#2F6F6B" fill-opacity="0.9"/></g><g transform="rotate(144 150 150)"><path d="M150,150 C166.7,117.5 165.0,85.0 150,57.2 C135.0,85.0 133.3,117.5 150,150 Z" fill="#7C8A3F" fill-opacity="0.9"/></g><g transform="rotate(216 150 150)"><path d="M150,150 C166.7,117.5 165.0,85.0 150,57.2 C135.0,85.0 133.3,117.5 150,150 Z" fill="#C2722E" fill-opacity="0.9"/></g><g transform="rotate(288 150 150)"><path d="M150,150 C168.8,113.5 166.9,76.9 150,45.6 C133.1,76.9 131.2,113.5 150,150 Z" fill="#6B4E9E" fill-opacity="0.9"/></g><circle cx="150" cy="150" r="9" fill="#FFFFFF" stroke="#241F1A" stroke-width="1.4"/><text x="150.0" y="35.2" text-anchor="middle" dominant-baseline="central" font-family="Georgia, serif" font-size="21" font-weight="bold" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="3.4">V</text><text x="150.0" y="35.2" text-anchor="middle" dominant-baseline="central" font-family="Georgia, serif" font-size="21" font-weight="bold" fill="#E0533D">V</text><text x="254.7" y="116.0" text-anchor="middle" dominant-baseline="central" font-family="Georgia, serif" font-size="21" font-weight="bold" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="3.4">C</text><text x="254.7" y="116.0" text-anchor="middle" dominant-baseline="central" font-family="Georgia, serif" font-size="21" font-weight="bold" fill="#2F6F6B">C</text><text x="213.4" y="237.2" text-anchor="middle" dominant-baseline="central" font-family="Georgia, serif" font-size="21" font-weight="bold" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="3.4">R</text><text x="213.4" y="237.2" text-anchor="middle" dominant-baseline="central" font-family="Georgia, serif" font-size="21" font-weight="bold" fill="#7C8A3F">R</text><text x="86.6" y="237.2" text-anchor="middle" dominant-baseline="central" font-family="Georgia, serif" font-size="21" font-weight="bold" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="3.4">I</text><text x="86.6" y="237.2" text-anchor="middle" dominant-baseline="central" font-family="Georgia, serif" font-size="21" font-weight="bold" fill="#C2722E">I</text><text x="36.4" y="113.1" text-anchor="middle" dominant-baseline="central" font-family="Georgia, serif" font-size="21" font-weight="bold" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="3.4">A</text><text x="36.4" y="113.1" text-anchor="middle" dominant-baseline="central" font-family="Georgia, serif" font-size="21" font-weight="bold" fill="#6B4E9E">A</text></svg></div>
+      <div class="arch-body">
+        <h4 class="arch-name" style="color:var(--adoption);">The Leverage Engine</h4>
+        <p class="arch-shape">Full and balanced, AI adoption converting into both Velocity and Complexity while Impact and Rigor hold.</p>
+        <p class="arch-coach">This is the shape to study and spread: AI investment that actually turns into output and harder problems solved. The template for what good looks like on an AI-era team.</p>
+      </div>
+    </div>
+  </div>
+    <aside class="howto">
+      <span class="hlabel">Read your own shape in 5 minutes</span>
+      <ol>
+        <li><strong>Pick a cohort, not a person.</strong> Choose one like-work team (platform, greenfield, or legacy maintenance). Never start with an individual.</li>
+        <li><strong>Grab two honest bands.</strong> Pull the two you already trust, usually Velocity (cycle-time trend) and Rigor (change-failure rate). Skip anything you would have to guess.</li>
+        <li><strong>Plot the trend, not the total.</strong> For each band ask one thing: up, flat, or down against this team's own last few months? Direction beats the absolute number.</li>
+        <li><strong>Read the silhouette.</strong> Is one leaf racing ahead of the rest? A long Velocity leaf beside a short Rigor leaf is a Firehose; a short Velocity leaf beside a long Complexity leaf is a Ghost Architect.</li>
+        <li><strong>Ask the question, don't assign the score.</strong> Turn the lopsided leaf into one curious question: "Velocity is up but Rigor is flat: are we trading stability for speed?" That question is the entire deliverable.</li>
+      </ol>
+      <p class="guard">If at any point you reached for a ranking, start over. The output is a conversation, never a verdict.</p>
+    </aside>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ================= 4. APPLYING VICAR ================= -->
+  <section>
+    <span class="sec-num">iv. applying vicar</span>
+    <h2 class="sec">Adopt the stance before the dashboard. Add resolution over time, never teeth.</h2>
+    <p class="lede" style="margin-bottom:24px;">The failure mode of every productivity initiative is starting at the individual and starting with a score. VICAR inverts both. The staged path is a shield, not bureaucracy: each stage earns the next, so the framework never outruns the data or the trust beneath it. Rush it and you manufacture the very chaos VICAR exists to prevent, half-measured bands brandished as a scoreboard.</p>
+    <div class="stages">
+      <div class="stage">
+        <p class="st">stage 1</p>
+        <h4>Establishing the baseline</h4>
+        <p class="stage-tag" style="color:var(--velocity)">Stop guessing.</p>
+        <p>Begin at the team, never the individual. Take the two bands you can measure honestly from systems you already trust (usually Velocity and Rigor) and read them against the team's own baseline. You stop arguing from anecdote and start reading from the team's own trend.</p>
+        <div class="pills"><span class="pill p-v">V</span><span class="pill p-r">R</span></div>
+      </div>
+      <div class="stage">
+        <p class="st">stage 2</p>
+        <h4>Layering context</h4>
+        <p class="stage-tag" style="color:var(--complexity)">Stop measuring churn.</p>
+        <p>Layer in Impact once you can tell new-value work from maintenance, and Complexity once you can characterise difficulty and blast radius. Now a busy week that shipped nothing that mattered stops reading as productivity. Each band added <em>honestly</em> beats three you fake.</p>
+        <div class="pills"><span class="pill p-i">I</span><span class="pill p-c">C</span></div>
+      </div>
+      <div class="stage">
+        <p class="st">stage 3</p>
+        <h4>Maximising AI leverage</h4>
+        <p class="stage-tag" style="color:var(--adoption)">The upstream engine.</p>
+        <p>AI adoption is not a final add-on; it is the <em>upstream driver</em> of the whole shape. Engineers with higher adoption tend to ship more (Velocity) and solve harder problems (Complexity), so read it as the leading signal that explains movement in the other bands. It follows V and C only because leverage divides their output by token spend: (Velocity + Complexity) &divide; tokens, never raw usage.</p>
+        <div class="pills"><span class="pill p-a">A</span></div>
+      </div>
+    </div>
+    <div class="throughout">
+      <p><strong>Throughout: coaching-first and cohort-bounded.</strong> The read surfaces <em>where to look</em> and <em>what conversation to start</em>; comparison is bounded to like cohorts and gated behind a deliberate action; the output reaches a manager as a prompt to help, never an HR system, never a comp input, never a ranking. The maturity path adds resolution to the shape; it never adds teeth. The day VICAR grows teeth is the day it stops measuring anything true.</p>
+    </div>
+  </section>
+
+  <!-- ================= 6. PRINCIPLES ================= -->
+  <section>
+    <div class="rails">
+      <h2>The framework is the principles</h2>
+      <p class="sub">Get these seven right and the specific metrics almost don't matter. Get them wrong and the best metrics will mislead you.</p>
+      <ol>
+        <li><b>Multi-dimensional, never a single score.</b><span>Track a shape across dimensions. The refusal of the single number is the foundation, not a feature.</span></li>
+        <li><b>Coaching, not evaluation.</b><span>Measure to find where to help. The output is a conversation, never a rating, comp, or HR input.</span></li>
+        <li><b>Trend over snapshot.</b><span>Movement against one's own baseline is signal; an absolute number compared across people is noise.</span></li>
+        <li><b>Auditable signals over opinions and LOC.</b><span>Every signal traces to evidence in a system of record (a service tier, an API path, a cyclomatic-complexity trend, a dependency graph) and answers "why?" down to the event. No opinions, no self-reported tags to game.</span></li>
+        <li><b>Outcomes over activity.</b><span>Anchor on whether the work mattered (value shipped, criticality touched), not the volume of motion.</span></li>
+        <li><b>AI adoption is a core driver.</b><span>In an AI-era org, higher adoption tends to lift Velocity and the Complexity a person can solve. Treat it as a first-class, leading dimension, measured as leverage: output and difficulty per token of spend, (Velocity + Complexity) &divide; tokens, never raw usage.</span></li>
+        <li><b>Compare only within like cohorts.</b><span>Compare shapes within a work-type cohort, defined by domain topology rather than job title (platform vs. greenfield feature vs. legacy maintenance). Comparison sits behind a deliberate action; never rank totals across cohorts.</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ================= CLOSE ================= -->
+  <section style="text-align:center;padding-top:30px;">
+    <p class="pull">VICAR is not a verdict on people. It is a better question to ask about a system, and a better place to <b>start a conversation.</b></p>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ================= APPENDIX ================= -->
+  <section>
+    <span class="sec-num">appendix · for the record</span>
+    <h2 class="sec">VICAR and the state of the art: a practitioner's map.</h2>
+    <p class="lede">VICAR doesn't replace the established frameworks; it makes their multidimensional discipline practical as a coaching instrument for AI-era development. Here's how it sits against the prior art, and what changes once AI is writing much of the code.</p>
+    <p class="fwk"><strong style="color:var(--velocity)">DORA (2018). </strong>Four keys (deployment frequency, lead time, change-failure rate, time to restore) that measure speed and stability together at the system level. That still matters with AI in the loop: AI inflates commit and PR volume, and DORA's stability-paired view guards against shipping fast and breaking things. But it reads the delivery pipeline, not people, difficulty, or whether the work mattered. VICAR borrows its discipline for Velocity and Rigor.</p>
+    <p class="fwk"><strong style="color:var(--complexity)">SPACE (2021). </strong>The meta-framework: productivity is multidimensional, so never measure on one axis. This is more vital, not less, once AI makes a single number like Velocity trivial to inflate. But SPACE is a way of thinking, not an operating model; it names the shape of a good measurement system, not which signals to put on the wall Monday morning. VICAR is one concrete instantiation of that discipline.</p>
+    <p class="fwk"><strong style="color:var(--adoption)">DevEx (2023). </strong>Reframes productivity through lived experience: feedback loops, cognitive load, flow state. AI tools reshape all three: faster feedback, but a new cognitive load in reviewing generated code you didn't write. DevEx surfaces drag before it shows up in delivery, but it leans on perception and describes the conditions for productivity more than the work itself. In VICAR it is the "why" behind a slow Velocity or Rigor band.</p>
+    <p class="fwk"><strong style="color:var(--rigor)">DX Core 4 (2024). </strong>The synthesis built for the AI era: Speed, Effectiveness, Quality, Impact, with developer experience as a leading indicator. It is the right operating model at leader altitude. What it doesn't prescribe is how to keep the read coaching-first and cohort-fair once it reaches a line manager and an individual, and it treats AI as context rather than a first-class, measured driver. VICAR brings that discipline down to the coaching conversation, with AI adoption promoted to a core band.</p>
+
+    <table class="cmp">
+      <thead><tr><th>Band</th><th>Maps to</th><th>How to read it when AI writes the code</th></tr></thead>
+      <tbody>
+        <tr><td><span class="bnd" style="color:var(--velocity)">V</span>Velocity</td><td>DORA; DX Core 4 "Speed"</td><td>A rise is expected, not a win; AI lifts everyone's throughput. Judge it against the team's new baseline; a spike with flat Impact and Rigor means churn, not progress.</td></tr>
+        <tr><td><span class="bnd" style="color:var(--impact)">I</span>Impact</td><td>DX Core 4 "Impact"; SPACE "Performance"</td><td>The real scoreboard once output is cheap. Rising Velocity but falling Impact = busy-work amplified by AI; point the freed capacity at what the business actually prioritised.</td></tr>
+        <tr><td><span class="bnd" style="color:var(--complexity)">C</span>Complexity</td><td>New for the AI era</td><td>Where human value migrates as AI absorbs routine code. High Complexity with low Velocity is the architect to protect, not a laggard; rising team Complexity is healthy.</td></tr>
+        <tr><td><span class="bnd" style="color:var(--adoption)">A</span>AI&nbsp;adoption</td><td>New for the AI era</td><td>Read as leverage, not spend: high spend + high output = a model to copy; high spend + flat output = a training gap (coach, don't cut); low spend + high output = fine; low spend + low output = likely blocked, start here.</td></tr>
+        <tr><td><span class="bnd" style="color:var(--rigor)">R</span>Rigor</td><td>DORA stability keys; DX Core 4 "Quality"</td><td>The early-warning band: AI adds code faster than review catches it, so a Rigor dip flags confidently-wrong output before it becomes an incident. Read a drop as "slow the AI firehose," not "blame the author."</td></tr>
+      </tbody>
+    </table>
+    <p class="body" style="margin-top:22px;">V&rarr;Speed, R&rarr;Quality and I&rarr;Impact align with DORA and DX Core 4; <strong>Complexity</strong> and <strong>AI adoption</strong> are the two bands the AI world specifically demands and the prior frameworks only gesture at. VICAR is not a rejection of DORA, SPACE, DevEx or DX Core 4. It is their discipline made practical for the team actually shipping with AI.</p>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ================= REFERENCES ================= -->
+  <section>
+    <span class="sec-num">references</span>
+    <p class="fwk"><strong>DORA: DevOps Research and Assessment.</strong> Four Keys / DORA Metrics Guide. dora.dev/guides/dora-metrics</p>
+    <p class="fwk"><strong>SPACE: Forsgren, Storey, Maddila, Zimmermann, Houck &amp; Butler (2021).</strong> "The SPACE of Developer Productivity." ACM Queue.</p>
+    <p class="fwk"><strong>DevEx: Noda, Storey, Forsgren &amp; Zimmermann (2023).</strong> "DevEx: What Actually Drives Productivity." ACM Queue.</p>
+    <p class="fwk"><strong>DX Core 4: Noda et al. (2024).</strong> "Introducing the DX Core 4." getDX.</p>
+    <p class="fwk"><strong>Goodhart's Law (1975; Strathern 1997).</strong> Charles Goodhart, "Problems of Monetary Management: The UK Experience" (1975). The popular phrasing is Marilyn Strathern, "Improving Ratings: Audit in the British University System," European Review 5(3), 305-321 (1997).</p>
+    <p class="fwk"><strong>McCabe (1976).</strong> Thomas J. McCabe, "A Complexity Measure." IEEE Transactions on Software Engineering, SE-2(4), pp. 308-320.</p>
+  </section>
+
+  <footer>
+    <div class="row">
+      <span>VICAR &middot; Velocity &middot; Impact &middot; Complexity &middot; AI Adoption &middot; Rigor</span>
+      <span>Whitepaper &middot; v1.0 &middot; June 2026</span>
+    </div>
+    <div class="row" style="margin-top:16px;font-size:11.5px;line-height:1.5;color:var(--ink-soft);">
+      <span style="max-width:none;">&copy; 2026 Shashank Mendiratta. All rights reserved. DORA, SPACE, DevEx and DX Core 4 are referenced for comparison and remain the property of their respective owners. This document is not legal advice.</span>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+  (function(){
+    var flower = document.getElementById('flower');
+    var keys = document.querySelectorAll('.vicar-key a');
+    function leafGroup(id){ return flower ? flower.querySelector('[data-leaf="'+id+'"]') : null; }
+    keys.forEach(function(a){
+      var g = leafGroup(a.getAttribute('data-leaf'));
+      a.addEventListener('mouseenter', function(){ if(flower){flower.classList.add('is-dim');} if(g){g.classList.add('leaf-focus');} });
+      a.addEventListener('mouseleave', function(){ if(flower){flower.classList.remove('is-dim');} if(g){g.classList.remove('leaf-focus');} });
+      a.addEventListener('click', function(){
+        var t = document.querySelector(a.getAttribute('href'));
+        if(t){ t.classList.add('flash'); setTimeout(function(){ t.classList.remove('flash'); }, 1400); }
+      });
+    });
+  })();
+</script>
+</body>
+</html>
