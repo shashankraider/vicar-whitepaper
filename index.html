@@ -213,6 +213,16 @@
   .howto li strong{color:var(--ink);}
   .howto .guard{margin:16px 0 0;font-style:italic;font-size:14px;color:var(--ink-soft);}
 
+  /* knowing the limits */
+  .watchsec .fail .lr{margin:11px 0 0;font-size:14.5px;color:var(--ink);}
+  .watchsec .fail .lr b{font-family:"Inter",system-ui,-apple-system,sans-serif;font-size:10.5px;text-transform:uppercase;letter-spacing:.12em;margin-right:8px;}
+  .watchsec .fail .lr.w b{color:var(--velocity);}
+  .watchsec .fail .lr.s b{color:var(--rigor);}
+  .watchsec .fail .risk{margin:0;}
+  .watchsec .fail.span{border-top-color:var(--adoption);}
+  .watchsec .fail.span h4{color:var(--adoption);}
+  .limits-note{font-size:12.5px;font-style:italic;color:var(--ink-soft);margin:26px 0 0;padding-top:14px;border-top:1px solid var(--rule);max-width:84ch;}
+
   @media(max-width:820px){
     .hero,.two-col,.matrix-wrap,.contrast,.fails,.stages{grid-template-columns:1fr;}
     .hero .note{border-left:0;border-top:1px solid var(--rule);padding:30px 0 6px;}
@@ -585,6 +595,52 @@
     <div class="throughout">
       <p><strong>Throughout: coaching-first and cohort-bounded.</strong> The read surfaces <em>where to look</em> and <em>what conversation to start</em>; comparison is bounded to like cohorts and gated behind a deliberate action; the output reaches a manager as a prompt to help, never an HR system, never a comp input, never a ranking. The maturity path adds resolution to the shape; it never adds teeth. The day VICAR grows teeth is the day it stops measuring anything true.</p>
     </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ================= 5. KNOWING THE LIMITS ================= -->
+  <section class="watchsec">
+    <span class="sec-num">v. knowing the limits</span>
+    <h2 class="sec">No instrument is neutral. Here is where VICAR bends, and how to keep it honest.</h2>
+    <p class="lede">Every measurement system has failure modes. The only question is whether they are named. Naming them is what keeps VICAR a coaching instrument rather than the next number to be gamed, so here are the ones to watch, each with the guardrail that holds it in place.</p>
+    <div class="fails">
+      <div class="fail">
+        <h4>Taxonomy capture</h4>
+        <p class="risk">Impact trusts the service tiers and epic rankings it reads. Game those and you game VICAR without touching a line of code: relabel work as tier-1, attach changes to ranked epics, lobby the rankings. The gaming just moves one hop upstream, from individual hustle to org politics.</p>
+        <p class="lr w"><b>Watch for</b>a sudden migration of work into high-tier buckets, or quiet pressure on whoever owns the taxonomy.</p>
+        <p class="lr s"><b>Stay honest</b>keep the taxonomy owned by a function with no stake in the read, and treat a spike in tier-1 labeling as its own question, not a win.</p>
+      </div>
+      <div class="fail">
+        <h4>Correlation is not proof</h4>
+        <p class="risk">Adoption up and Velocity up in the same quarter does not prove AI caused the lift. The two may simply have risen together, or a third thing lifted both. VICAR reads a relationship, not a cause.</p>
+        <p class="lr w"><b>Watch for</b>anyone citing the shape as proof that the AI spend "worked," or as a number to defend a budget.</p>
+        <p class="lr s"><b>Stay honest</b>treat every reading as a hypothesis to test with the team. VICAR opens a conversation; it never closes one.</p>
+      </div>
+      <div class="fail">
+        <h4>A single leaf tells you nothing</h4>
+        <p class="risk">Every band is gameable on its own: run up active days, pad test coverage, inflate the estimate. The signal lives only in the shape, where one gamed leaf is contradicted by the others.</p>
+        <p class="lr w"><b>Watch for</b>any one band celebrated, or feared, in isolation.</p>
+        <p class="lr s"><b>Stay honest</b>never read a leaf alone. A movement no neighbouring leaf corroborates is noise, not signal.</p>
+      </div>
+      <div class="fail">
+        <h4>Direction, not magnitude</h4>
+        <p class="risk">The leaves have length, but the discipline is only up, flat, or down against a baseline. Reading exact lengths invites false precision and "how long is long?" arguments the data cannot settle.</p>
+        <p class="lr w"><b>Watch for</b>debates about whether one leaf is "longer" than another, or scores derived from leaf size.</p>
+        <p class="lr s"><b>Stay honest</b>read the arrow, not the millimetre. The shape is qualitative by design.</p>
+      </div>
+      <div class="fail span">
+        <h4>Powerful metrics demand discipline</h4>
+        <p class="risk">Per-individual VICAR data is genuinely powerful: one of the sharpest coaching signals a manager will ever hold, precise enough to see exactly where someone is stuck and how to help. That same precision is why the discipline around it matters, because a coaching signal and a ranking signal look identical in the data. The principles are what decide which one it becomes.</p>
+        <p class="lr w"><b>Watch for</b>the read being pulled toward evaluation, into a calibration, a stack rank, or an HR system, rather than staying a coaching conversation.</p>
+        <p class="lr s"><b>Stay honest</b>hold the principles: keep the per-individual read manager-private and coaching-only, compared at the cohort level, so the power stays aimed at helping people rather than rating them.</p>
+      </div>
+    </div>
+    <blockquote class="insight" style="--accent:var(--rigor)">
+      <span class="ilabel">VICAR Insight</span>
+      <p>A framework that hides its failure modes is just another number waiting to be gamed. The ones named here are the price of being honest, not signs the instrument is broken.</p>
+    </blockquote>
+    <p class="limits-note">A note on maturity: VICAR is argued from first principles and not yet validated across organisations the way DORA has been. Adopt it as a working hypothesis, calibrate it to your own teams, and let the evidence sharpen it over time.</p>
   </section>
 
   <!-- ================= 6. PRINCIPLES ================= -->
