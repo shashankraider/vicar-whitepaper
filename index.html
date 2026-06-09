@@ -313,7 +313,7 @@
   <div class="abstract">
     <p class="lbl">Abstract</p>
     <p>Developer productivity is not a number. Every attempt to compress it into a single score (a velocity figure, a commit count, an "AI usage" percentage) fails the same way: it measures motion instead of value, and the moment it becomes a target, it stops measuring anything true.</p>
-    <p>VICAR refuses the single number. Productivity is a multi-dimensional <b>shape</b>, read as a trend against a team's own baseline and used to start a coaching conversation. The five dimensions that carry the signal are <b>Velocity</b> (productive flow), <b>Impact</b> (whether the work mattered), <b>Complexity</b> (the difficulty and blast radius of what was built), <b>AI&nbsp;adoption</b> (read against leverage, not usage), and <b>Rigor</b> (engineering quality and hygiene). AI&nbsp;adoption is a <b>core driver</b>, not an afterthought; in an AI-era org, higher adoption tends to lift the other bands. The shape is read as a trend, used as the opening line of a conversation, and never as an input to evaluation.</p>
+    <p>VICAR refuses the single number. Productivity is a multi-dimensional <b>shape</b>, read as a trend against a team's own baseline and used to start a coaching conversation. The five dimensions that carry the signal are <b>Velocity</b> (productive flow), <b>Impact</b> (whether the work mattered), <b>Complexity</b> (the difficulty and blast radius of what was built), <b>AI&nbsp;adoption</b> (real use, read against the bands it moves), and <b>Rigor</b> (engineering quality and hygiene). AI&nbsp;adoption is a <b>core driver</b>, not an afterthought; in an AI-era org, higher adoption tends to lift the other bands. The shape is read as a trend, used as the opening line of a conversation, and never as an input to evaluation.</p>
   </div>
 
   <!-- ================= 1. THE PROBLEM ================= -->
@@ -352,7 +352,7 @@
         <tr><td><span class="bnd" style="color:var(--velocity)">V</span>Velocity</td><td>Tracking Jira story points closed per week.</td><td>Tracking cycle-time trends against a team's own baseline.</td></tr>
         <tr><td><span class="bnd" style="color:var(--impact)">I</span>Impact</td><td>Counting tickets or features shipped.</td><td>Reading whether a change touched tier-1 services and ranked epics: value, not volume.</td></tr>
         <tr><td><span class="bnd" style="color:var(--complexity)">C</span>Complexity</td><td>Counting lines of code or files changed.</td><td>Tracking cyclomatic-complexity trends and blast radius: difficulty, not size.</td></tr>
-        <tr><td><span class="bnd" style="color:var(--adoption)">A</span>AI&nbsp;adoption</td><td>Counting GitHub Copilot seat or licence utilisation.</td><td>Measuring output and complexity leverage against token spend.</td></tr>
+        <tr><td><span class="bnd" style="color:var(--adoption)">A</span>AI&nbsp;adoption</td><td>Counting GitHub Copilot seat or licence utilisation.</td><td>Measuring real AI usage, then reading where it lands in Velocity and Complexity.</td></tr>
         <tr><td><span class="bnd" style="color:var(--rigor)">R</span>Rigor</td><td>Demanding a flat 80% test-coverage minimum.</td><td>Monitoring change-failure-rate dips relative to deployment spikes.</td></tr>
       </tbody>
     </table>
@@ -423,15 +423,10 @@
       </div>
       <div>
         <h3 class="pname"><span class="badge">A</span>AI Adoption</h3>
-        <p class="reads">AI investment read against what it produced: the throughput and difficulty earned per token of spend, not usage counts.</p>
-        <div class="blk"><h5>What it reads</h5><p>Leverage, not usage. True ROI puts output over investment, not the other way around:</p>
-        <div class="formula" role="img" aria-label="AI Leverage equals open paren Velocity plus Complexity close paren divided by Token Spend">
-          <span class="lhs">AI&nbsp;Leverage</span><span class="eq">=</span>
-          <span class="frac"><span class="num">Velocity&nbsp;+&nbsp;Complexity</span><span class="den">Token&nbsp;Spend</span></span>
-        </div>
-        <p>The numerator is what the engineer produced: shipped throughput plus the harder Complexity work (research, spikes, triage, design) that throughput alone never captures; the denominator is what it cost. Getting more throughput and more complexity out of fewer tokens is superior leverage; burning tokens for little movement is not. Adoption is the cost; leverage is the return, and only the return belongs on a productivity instrument.</p></div>
-        <div class="ai blk"><h5>Significance in the world of AI</h5><p>The band the older thinking predates, promoted here to a first-class dimension rather than a footnote. It is framed as <strong>enablement, not a spend gotcha</strong>: find who gets leverage, who pays without payoff, and who hasn't started, so support can be targeted. Because output includes Complexity, the architect spending heavily on AI to do research and design reads as leverage, not as "not converting."</p></div>
-        <div class="blk"><h5>How it builds a high-performing team</h5><p>It turns AI rollout from a hope into a read: a coaching prompt for who to pair, who to unblock, and where the spend is paying off, never a score folded into a number.</p></div>
+        <p class="reads">How much of the work is genuinely AI-assisted, measured directly and read as a trend. We can measure how much, never what for, so where it lands is read against the other bands.</p>
+        <div class="blk"><h5>What it reads</h5><p>A quantified intensity of assistant use, read as a trend against the cohort's own baseline, never a seat count or a token bill. Every signal is instrument-able from tooling telemetry: the share of changes that are AI-assisted, active days on the assistant, accepted output per active day, and sessions per active day. Telemetry shows how much the tools are used, never what for; where that usage is aimed is read against Velocity and Complexity, as the silhouettes in Shape over score make explicit.</p></div>
+        <div class="ai blk"><h5>Significance in the world of AI</h5><p>The band the older thinking predates, promoted here to a first-class dimension rather than a footnote. It is framed as <strong>enablement, not a spend gotcha</strong>: find who gets leverage, who pays without payoff, and who hasn't started, so support can be targeted. Because the target is read from Complexity as well as Velocity, the architect leaning on AI for research and design reads as adoption aimed at hard problems, not as "not converting."</p></div>
+        <div class="blk"><h5>How it builds a high-performing team</h5><p>It turns AI rollout from a hope into a read: a coaching prompt for who to pair, who to unblock, and where adoption is paying off, never a score folded into a number.</p></div>
         <blockquote class="insight" style="--accent:var(--adoption)">
           <span class="ilabel">VICAR Insight</span>
           <p>An organisation can reach 100% AI adoption and produce zero leverage. Usage is the receipt; leverage is the return. A dashboard that celebrates seats is measuring the bill, not the value.</p>
@@ -530,6 +525,20 @@
       </div>
     </div>
   </div>
+    <h3 class="arch-h" style="margin-top:42px;">Reading AI adoption against the shape</h3>
+    <p class="body" style="margin-bottom:10px;">Telemetry measures how much AI is used, never what for. So you read adoption against the bands that move: where it lands tells you what it was aimed at, and Rigor says whether speed was bought with instability.</p>
+    <table class="cmp">
+      <thead><tr><th>AI adoption</th><th>Velocity</th><th>Complexity</th><th>Rigor</th><th>What it tells you</th></tr></thead>
+      <tbody>
+        <tr><td><span class="bnd" style="color:var(--adoption)">A</span>High</td><td>up</td><td>flat</td><td>held</td><td>Aimed at throughput: AI is converting into shipping speed.</td></tr>
+        <tr><td><span class="bnd" style="color:var(--adoption)">A</span>High</td><td>flat</td><td>up</td><td>held</td><td>Aimed at hard problems: design, refactor, research. The architect's pattern.</td></tr>
+        <tr><td><span class="bnd" style="color:var(--adoption)">A</span>High</td><td>up</td><td>up</td><td>held</td><td>Broad leverage, converting on both. The Leverage Engine: copy it.</td></tr>
+        <tr><td><span class="bnd" style="color:var(--adoption)">A</span>High</td><td>up</td><td>flat</td><td>dropped</td><td>Firehose: speed bought by mortgaging stability. Slow it, review it.</td></tr>
+        <tr><td><span class="bnd" style="color:var(--adoption)">A</span>High</td><td>flat</td><td>flat</td><td>held</td><td>Misdirected or just exploring: high usage, nothing landing yet.</td></tr>
+        <tr><td><span class="bnd" style="color:var(--adoption)">A</span>Low</td><td>flat</td><td>flat</td><td>n/a</td><td>Not adopted; if the work suits it, likely blocked: start here.</td></tr>
+      </tbody>
+    </table>
+
     <aside class="howto">
       <span class="hlabel">Read your own shape in 5 minutes</span>
       <ol>
@@ -569,7 +578,7 @@
         <p class="st">stage 3</p>
         <h4>Maximising AI leverage</h4>
         <p class="stage-tag" style="color:var(--adoption)">The upstream engine.</p>
-        <p>AI adoption is not a final add-on; it is the <em>upstream driver</em> of the whole shape. Engineers with higher adoption tend to ship more (Velocity) and solve harder problems (Complexity), so read it as the leading signal that explains movement in the other bands. It follows V and C only because leverage divides their output by token spend: (Velocity + Complexity) &divide; tokens, never raw usage.</p>
+        <p>AI adoption is not a final add-on; it is the <em>upstream driver</em> of the whole shape. Engineers with higher adoption tend to ship more (Velocity) and solve harder problems (Complexity), so read it as the leading signal that explains movement in the other bands. It is read against Velocity and Complexity to show where the usage is landing, so it explains the movement in everything above it.</p>
         <div class="pills"><span class="pill p-a">A</span></div>
       </div>
     </div>
@@ -589,7 +598,7 @@
         <li><b>Trend over snapshot.</b><span>Movement against one's own baseline is signal; an absolute number compared across people is noise.</span></li>
         <li><b>Auditable signals over opinions and LOC.</b><span>Every signal traces to evidence in a system of record (a service tier, an API path, a cyclomatic-complexity trend, a dependency graph) and answers "why?" down to the event. No opinions, no self-reported tags to game.</span></li>
         <li><b>Outcomes over activity.</b><span>Anchor on whether the work mattered (value shipped, criticality touched), not the volume of motion.</span></li>
-        <li><b>AI adoption is a core driver.</b><span>In an AI-era org, higher adoption tends to lift Velocity and the Complexity a person can solve. Treat it as a first-class, leading dimension, measured as leverage: output and difficulty per token of spend, (Velocity + Complexity) &divide; tokens, never raw usage.</span></li>
+        <li><b>AI adoption is a core driver.</b><span>In an AI-era org, higher adoption tends to lift Velocity and the Complexity a person can solve. Treat it as a first-class, leading dimension: measure real usage and read where it lands in Velocity and Complexity, never a token ratio or a single score.</span></li>
         <li><b>Compare only within like cohorts.</b><span>Compare shapes within a work-type cohort, defined by domain topology rather than job title (platform vs. greenfield feature vs. legacy maintenance). Comparison sits behind a deliberate action; never rank totals across cohorts.</span></li>
       </ol>
     </div>
@@ -618,7 +627,7 @@
         <tr><td><span class="bnd" style="color:var(--velocity)">V</span>Velocity</td><td>DORA; DX Core 4 "Speed"</td><td>A rise is expected, not a win; AI lifts everyone's throughput. Judge it against the team's new baseline; a spike with flat Impact and Rigor means churn, not progress.</td></tr>
         <tr><td><span class="bnd" style="color:var(--impact)">I</span>Impact</td><td>DX Core 4 "Impact"; SPACE "Performance"</td><td>The real scoreboard once output is cheap. Rising Velocity but falling Impact = busy-work amplified by AI; point the freed capacity at what the business actually prioritised.</td></tr>
         <tr><td><span class="bnd" style="color:var(--complexity)">C</span>Complexity</td><td>New for the AI era</td><td>Where human value migrates as AI absorbs routine code. High Complexity with low Velocity is the architect to protect, not a laggard; rising team Complexity is healthy.</td></tr>
-        <tr><td><span class="bnd" style="color:var(--adoption)">A</span>AI&nbsp;adoption</td><td>New for the AI era</td><td>Read as leverage, not spend: high spend + high output = a model to copy; high spend + flat output = a training gap (coach, don't cut); low spend + high output = fine; low spend + low output = likely blocked, start here.</td></tr>
+        <tr><td><span class="bnd" style="color:var(--adoption)">A</span>AI&nbsp;adoption</td><td>New for the AI era</td><td>Read as usage in context, not spend: high adoption + high output = a model to copy; high adoption + flat output = a training gap (coach, don't cut); low adoption + high output = fine; low adoption + low output = likely blocked, start here.</td></tr>
         <tr><td><span class="bnd" style="color:var(--rigor)">R</span>Rigor</td><td>DORA stability keys; DX Core 4 "Quality"</td><td>The early-warning band: AI adds code faster than review catches it, so a Rigor dip flags confidently-wrong output before it becomes an incident. Read a drop as "slow the AI firehose," not "blame the author."</td></tr>
       </tbody>
     </table>
